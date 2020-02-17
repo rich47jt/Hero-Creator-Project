@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project_SuperHero_Creator.Data;
+using Project_SuperHero_Creator.Models;
 
 namespace Project_SuperHero_Creator.Controllers
 {
@@ -14,65 +15,72 @@ namespace Project_SuperHero_Creator.Controllers
 
         public HeroController(ApplicationDbContext context)
         {
-            _context = context;
+            context = _context;
         }
         // GET: Hero
-        public ActionResult Index()
+        public ActionResult Index(SuperHeroes heroes)
         {
-            return View();
+            var theseheroes = heroes;
+            theseheroes = _context.Heroes.Where(h => h.Id == theseheroes.Id && h.HeroName == theseheroes.HeroName && h.PrimaryAbility == theseheroes.PrimaryAbility && h.SecondaryAbility == theseheroes.SecondaryAbility).FirstOrDefault();
+            _context.SaveChanges();
+            return View(theseheroes);
         }
 
-        // GET: Hero/Details/5
+        // GET: Hero/Details/
         public ActionResult Details(int id)
         {
-            return View();
+           
+            _context.Heroes.Find(id);
+            return View(id);
         }
 
         // GET: Hero/Create
         public ActionResult Create()
         {
-            return View();
+            SuperHeroes heroes = new SuperHeroes();
+            return View(heroes);
         }
 
         // POST: Hero/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+        public ActionResult Create(SuperHeroes heroes)
+        {
+            var newhero = heroes;
+            if (newhero == null)
+            { 
+                    _context.Heroes.Where(h => h.Id == newhero.Id && h.HeroName == newhero.HeroName && h.PrimaryAbility == newhero.PrimaryAbility && h.SecondaryAbility == newhero.SecondaryAbility).FirstOrDefault();
+                    _context.SaveChanges();
+                    return RedirectToAction(nameof(Index));
+                
+            }  
+            return View(newhero);
         }
 
-        // GET: Hero/Edit/5
+        // GET: Hero/Edit/
         public ActionResult Edit(int id)
         {
-            return View();
+            _context.Heroes.Find(id);
+            return View(id);
         }
 
         // POST: Hero/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        
+        public ActionResult Edit(int id, SuperHeroes heroes)
         {
-            try
+            var EditHero = heroes;
+            heroes.Id = id;
+            if (EditHero.Equals(id))
             {
-                // TODO: Add update logic here
-
+                
+               _context.Heroes.Where(h => h.Id == EditHero.Id && h.HeroName == EditHero.HeroName && h.PrimaryAbility == EditHero.PrimaryAbility && h.SecondaryAbility == EditHero.SecondaryAbility);
+               _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                
+               
+            } 
+            return View(EditHero);
+            
+        }   
 
         // GET: Hero/Delete/5
         public ActionResult Delete(int id)
@@ -81,8 +89,7 @@ namespace Project_SuperHero_Creator.Controllers
         }
 
         // POST: Hero/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try
