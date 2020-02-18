@@ -64,7 +64,7 @@ namespace Project_SuperHero_Creator.Controllers
             }
             else
             {
-
+                return RedirectToAction("Index");
             }
             
         }
@@ -73,8 +73,19 @@ namespace Project_SuperHero_Creator.Controllers
         [HttpPost]
         public ActionResult Edit(int id, SuperHeroes heroes)
         {
-            heroes = _context.Heroes.Find(id);
-            return RedirectToAction(nameof(Index));
+            if (id > 0)
+            {
+               heroes = _context.Heroes.Find(id);
+               _context.SaveChanges();
+               return View("Index");
+            }
+            else
+            {
+               return RedirectToAction(nameof(Index));
+            }
+            
+           
+            
         }   
 
         // GET: Hero/Delete/5
