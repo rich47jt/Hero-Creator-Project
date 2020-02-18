@@ -15,10 +15,7 @@ namespace Project_SuperHero_Creator.Models
         public string AlterEgo { get; set; }
         public string PrimaryAbility { get; set; }
         public string SecondaryAbility { get; set; }
-
-        public static implicit operator DbSet<object>(SuperHeroes v)
-        {
-            throw new NotImplementedException();
-        }
+        public string CatchPhrase { get; set; }
+        
     }
 }

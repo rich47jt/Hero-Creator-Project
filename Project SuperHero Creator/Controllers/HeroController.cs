@@ -11,24 +11,22 @@ namespace Project_SuperHero_Creator.Controllers
 {
     public class HeroController : Controller
     {
-        ApplicationDbContext _context;
-
+       ApplicationDbContext _context;
         public HeroController(ApplicationDbContext context)
         {
-            context = _context;
+            _context = context;
         }
         // GET: Hero
         public ActionResult Index()
         {
-           
-            return View( );
+            return View(_context.Heroes.ToList());
         }
 
         // GET: Hero/Details/
         public ActionResult Details(int id)
         {
-            _context.Heroes.Where(h => h.Id == id);
-            return View(id);
+
+            return View(_context.Heroes.Find(id));
         }
 
         // GET: Hero/Create
@@ -52,24 +50,17 @@ namespace Project_SuperHero_Creator.Controllers
         // GET: Hero/Edit/
         [HttpGet]
         public ActionResult Edit(int id)
-        { 
-            _context.Heroes.Where(h => h.Id == id);
-            return View(id);
+        {
+            return View(_context.Heroes.Find(id));
         }
 
         // POST: Hero/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, SuperHeroes heroes)
         {
-            var EditHero = heroes;
-            if (heroes.Id == id)
-            { 
-                _context.Heroes.Add(EditHero);
-                _context.SaveChanges();
-
-            }
-           
-            return RedirectToAction(nameof(Index));
+            
+             _context.Heroes.Add(heroes);
+             return RedirectToAction(nameof(Index));
             
         }   
 
@@ -77,22 +68,23 @@ namespace Project_SuperHero_Creator.Controllers
         [HttpGet]
         public ActionResult Delete(int id)
         {
-            _context.Heroes.Where(h => h.Id == id);
-            return View(id);
+            return View( _context.Heroes.Find(id));
         }
 
         // POST: Hero/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, SuperHeroes heroes)
         {
-            var removeheore = heroes;
-            if (heroes.Id == id)
-            {
-              _context.Heroes.Where(h => h.Id == removeheore.Id && h.HeroName == removeheore.HeroName && h.PrimaryAbility == removeheore.PrimaryAbility && h.SecondaryAbility == removeheore.SecondaryAbility);
-               _context.Remove(removeheore);
-
-            }
-             return RedirectToAction(nameof(Index));
+          var removeheore = heroes;
+          removeheore =  _context.Heroes.Find(id);
+           _context.Remove(removeheore);
+           _context.SaveChanges();
+           return RedirectToAction(nameof(Index));
         }
     }
 }
+
+
+
+
+

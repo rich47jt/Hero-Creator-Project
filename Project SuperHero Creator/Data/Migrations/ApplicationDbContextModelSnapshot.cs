@@ -229,6 +229,9 @@ namespace Project_SuperHero_Creator.Data.Migrations
                     b.Property<string>("AlterEgo")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CatchPhrase")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("HeroName")
                         .HasColumnType("nvarchar(max)");
 

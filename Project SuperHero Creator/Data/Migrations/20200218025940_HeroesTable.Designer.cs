@@ -10,8 +10,8 @@ using Project_SuperHero_Creator.Data;
 namespace Project_SuperHero_Creator.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200217145106_HeroTable")]
-    partial class HeroTable
+    [Migration("20200218025940_HeroesTable")]
+    partial class HeroesTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -229,6 +229,9 @@ namespace Project_SuperHero_Creator.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AlterEgo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CatchPhrase")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HeroName")
