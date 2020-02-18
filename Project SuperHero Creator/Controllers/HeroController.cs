@@ -25,8 +25,15 @@ namespace Project_SuperHero_Creator.Controllers
         // GET: Hero/Details/
         public ActionResult Details(int id)
         {
-
-            return View(_context.Heroes.Find(id));
+            if (id > 0)
+            {
+                return View(_context.Heroes.Find(id));
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+            
         }
 
         // GET: Hero/Create
@@ -58,10 +65,8 @@ namespace Project_SuperHero_Creator.Controllers
         [HttpPost]
         public ActionResult Edit(int id, SuperHeroes heroes)
         {
-            
-             _context.Heroes.Add(heroes);
-             return RedirectToAction(nameof(Index));
-            
+            heroes = _context.Heroes.Find(id);
+            return RedirectToAction(nameof(Index));
         }   
 
         // GET: Hero/Delete/5
@@ -75,11 +80,10 @@ namespace Project_SuperHero_Creator.Controllers
         [HttpPost]
         public ActionResult Delete(int id, SuperHeroes heroes)
         {
-          var removeheore = heroes;
-          removeheore =  _context.Heroes.Find(id);
-           _context.Remove(removeheore);
-           _context.SaveChanges();
-           return RedirectToAction(nameof(Index));
+            heroes = _context.Heroes.Find(id);
+            _context.Remove(heroes);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
     }
 }
