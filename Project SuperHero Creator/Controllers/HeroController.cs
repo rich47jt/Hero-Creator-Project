@@ -18,23 +18,21 @@ namespace Project_SuperHero_Creator.Controllers
             context = _context;
         }
         // GET: Hero
-        public ActionResult Index(SuperHeroes heroes)
+        public ActionResult Index()
         {
-            var theseheroes = heroes;
-            theseheroes = _context.Heroes.Where(h => h.Id == theseheroes.Id && h.HeroName == theseheroes.HeroName && h.PrimaryAbility == theseheroes.PrimaryAbility && h.SecondaryAbility == theseheroes.SecondaryAbility).FirstOrDefault();
-            _context.SaveChanges();
-            return View(theseheroes);
+           
+            return View( );
         }
 
         // GET: Hero/Details/
         public ActionResult Details(int id)
         {
-           
-            _context.Heroes.Find(id);
+            _context.Heroes.Where(h => h.Id == id);
             return View(id);
         }
 
         // GET: Hero/Create
+        [HttpGet]
         public ActionResult Create()
         {
             SuperHeroes heroes = new SuperHeroes();
@@ -42,66 +40,59 @@ namespace Project_SuperHero_Creator.Controllers
         }
 
         // POST: Hero/Create
-
+        [HttpPost]
         public ActionResult Create(SuperHeroes heroes)
         {
             var newhero = heroes;
-            if (newhero == null)
-            { 
-                    _context.Heroes.Where(h => h.Id == newhero.Id && h.HeroName == newhero.HeroName && h.PrimaryAbility == newhero.PrimaryAbility && h.SecondaryAbility == newhero.SecondaryAbility).FirstOrDefault();
-                    _context.SaveChanges();
-                    return RedirectToAction(nameof(Index));
-                
-            }  
-            return View(newhero);
-        }
-
+            _context.Heroes.Add(newhero);
+            _context.SaveChanges();
+            return RedirectToAction("Index");   
+        } 
+         
         // GET: Hero/Edit/
+        [HttpGet]
         public ActionResult Edit(int id)
-        {
-            _context.Heroes.Find(id);
+        { 
+            _context.Heroes.Where(h => h.Id == id);
             return View(id);
         }
 
         // POST: Hero/Edit/5
-        
+        [HttpPost]
         public ActionResult Edit(int id, SuperHeroes heroes)
         {
             var EditHero = heroes;
-            heroes.Id = id;
-            if (EditHero.Equals(id))
-            {
-                
-               _context.Heroes.Where(h => h.Id == EditHero.Id && h.HeroName == EditHero.HeroName && h.PrimaryAbility == EditHero.PrimaryAbility && h.SecondaryAbility == EditHero.SecondaryAbility);
-               _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-                
-               
-            } 
-            return View(EditHero);
+            if (heroes.Id == id)
+            { 
+                _context.Heroes.Add(EditHero);
+                _context.SaveChanges();
+
+            }
+           
+            return RedirectToAction(nameof(Index));
             
         }   
 
         // GET: Hero/Delete/5
+        [HttpGet]
         public ActionResult Delete(int id)
         {
-            return View();
+            _context.Heroes.Where(h => h.Id == id);
+            return View(id);
         }
 
         // POST: Hero/Delete/5
-        
-        public ActionResult Delete(int id, IFormCollection collection)
+        [HttpPost]
+        public ActionResult Delete(int id, SuperHeroes heroes)
         {
-            try
+            var removeheore = heroes;
+            if (heroes.Id == id)
             {
-                // TODO: Add delete logic here
+              _context.Heroes.Where(h => h.Id == removeheore.Id && h.HeroName == removeheore.HeroName && h.PrimaryAbility == removeheore.PrimaryAbility && h.SecondaryAbility == removeheore.SecondaryAbility);
+               _context.Remove(removeheore);
 
-                return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+             return RedirectToAction(nameof(Index));
         }
     }
 }
