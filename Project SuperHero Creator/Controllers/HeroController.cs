@@ -58,7 +58,15 @@ namespace Project_SuperHero_Creator.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            return View(_context.Heroes.Find(id));
+            if (id > 0)
+            {
+               return View(_context.Heroes.Find(id));
+            }
+            else
+            {
+
+            }
+            
         }
 
         // POST: Hero/Edit/5
