@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Project_SuperHero_Creator.Models
 {
-    public class SuperHeroes
+    public class SuperHero
     {
         [Key]
         public int Id { get; set; }

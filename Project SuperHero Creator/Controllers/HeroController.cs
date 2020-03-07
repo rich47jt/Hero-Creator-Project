@@ -42,13 +42,13 @@ namespace Project_SuperHero_Creator.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            SuperHeroes heroes = new SuperHeroes();
+            SuperHero heroes = new SuperHero();
             return View(heroes);
         }
 
         // POST: Hero/Create
         [HttpPost]
-        public ActionResult Create([Bind("Id,HeroName,AlterEgo,PrimaryAbility,SecondaryAbility,CatchPhrase")]SuperHeroes heroes)
+        public ActionResult Create([Bind("Id,HeroName,AlterEgo,PrimaryAbility,SecondaryAbility,CatchPhrase")]SuperHero heroes)
         {
             
             _context.Heroes.Add(heroes);
@@ -76,7 +76,7 @@ namespace Project_SuperHero_Creator.Controllers
 
         // POST: Hero/Edit/5
         [HttpPost]
-        public ActionResult Edit(int? id, [Bind("Id,HeroName,AlterEgo,PrimaryAbility,SecondaryAbility,CatchPhrase")] SuperHeroes heroes)
+        public ActionResult Edit(int? id, [Bind("Id,HeroName,AlterEgo,PrimaryAbility,SecondaryAbility,CatchPhrase")] SuperHero heroes)
         {
             if (id != heroes.Id)
             {
@@ -86,7 +86,7 @@ namespace Project_SuperHero_Creator.Controllers
             {
                 _context.Heroes.Update(heroes);
                 _context.SaveChanges();
-               return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));
             }
             return View();
             
@@ -103,9 +103,9 @@ namespace Project_SuperHero_Creator.Controllers
 
         // POST: Hero/Delete/5
         [HttpPost]
-        public ActionResult Delete(int? id, [Bind("Id,HeroName,AlterEgo,PrimaryAbility,SecondaryAbility,CatchPhrase")] SuperHeroes heroes)
+        public ActionResult Delete(int? id, [Bind("Id,HeroName,AlterEgo,PrimaryAbility,SecondaryAbility,CatchPhrase")] SuperHero heroes)
         {
-            if (id == null)
+            if (id != heroes.Id)
             {
                 NotFound();
             }
