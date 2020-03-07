@@ -76,17 +76,19 @@ namespace Project_SuperHero_Creator.Controllers
 
         // POST: Hero/Edit/5
         [HttpPost]
-        public ActionResult Edit(int? id, [Bind(("Id,HeroName,AlterEgo,PrimaryAbility,SecondaryAbility,CatchPhrase")]SuperHeroes heroes)
+        public ActionResult Edit(int? id, [Bind("Id,HeroName,AlterEgo,PrimaryAbility,SecondaryAbility,CatchPhrase")] SuperHeroes heroes)
         {
-            if (id == null)
+            if (id != heroes.Id)
             {
                 NotFound();
             }
             else
             {
-
+                _context.Heroes.Update(heroes);
+                _context.SaveChanges();
                return RedirectToAction(nameof(Index));
             }
+            return View();
             
            
             
@@ -94,19 +96,28 @@ namespace Project_SuperHero_Creator.Controllers
 
         // GET: Hero/Delete/5
         [HttpGet]
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int? id)
         {
             return View( _context.Heroes.Find(id));
         }
 
         // POST: Hero/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, SuperHeroes heroes)
+        public ActionResult Delete(int? id, [Bind("Id,HeroName,AlterEgo,PrimaryAbility,SecondaryAbility,CatchPhrase")] SuperHeroes heroes)
         {
-            heroes = _context.Heroes.Find(id);
-            _context.Remove(heroes);
-            _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            if (id == null)
+            {
+                NotFound();
+            }
+            else
+            {
+              _context.Heroes.Find(id);
+              _context.Remove(heroes);
+              _context.SaveChanges();
+              return RedirectToAction(nameof(Index));
+
+            }
+            return View();
         }
     }
 }
