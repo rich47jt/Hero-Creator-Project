@@ -23,17 +23,19 @@ namespace Project_SuperHero_Creator.Controllers
         }
 
         // GET: Hero/Details/
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
-            if (id > 0)
+            if (id == null)
             {
-                return View(_context.Heroes.Find(id));
+                NotFound();
             }
             else
             {
-                return RedirectToAction("Index");
+                _context.Heroes.Where(h => h.Id == id).FirstOrDefault();
+                _context.Heroes.Find(id);
+                return View(id);
             }
-            
+            return View();
         }
 
         // GET: Hero/Create
@@ -46,41 +48,43 @@ namespace Project_SuperHero_Creator.Controllers
 
         // POST: Hero/Create
         [HttpPost]
-        public ActionResult Create(SuperHeroes heroes)
+        public ActionResult Create([Bind("Id,HeroName,AlterEgo,PrimaryAbility,SecondaryAbility,CatchPhrase")]SuperHeroes heroes)
         {
-            var newhero = heroes;
-            _context.Heroes.Add(newhero);
+            
+            _context.Heroes.Add(heroes);
             _context.SaveChanges();
-            return RedirectToAction("Index");   
+            return RedirectToAction(nameof(Index));   
         } 
          
         // GET: Hero/Edit/
         [HttpGet]
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
-            if (id > 0)
+            if (id == null)
             {
-               return View(_context.Heroes.Find(id));
+                NotFound();
             }
             else
             {
-                return RedirectToAction("Index");
+                _context.Heroes.Where(h => h.Id == id).FirstOrDefault();
+                _context.Heroes.Find(id);
+                return RedirectToAction(nameof(Index));
             }
+            return View();
             
         }
 
         // POST: Hero/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, SuperHeroes heroes)
+        public ActionResult Edit(int? id, [Bind(("Id,HeroName,AlterEgo,PrimaryAbility,SecondaryAbility,CatchPhrase")]SuperHeroes heroes)
         {
-            if (id > 0)
+            if (id == null)
             {
-               heroes = _context.Heroes.Find(id);
-               _context.SaveChanges();
-               return View("Index");
+                NotFound();
             }
             else
             {
+
                return RedirectToAction(nameof(Index));
             }
             
