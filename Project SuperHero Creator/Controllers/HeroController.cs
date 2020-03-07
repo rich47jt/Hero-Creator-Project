@@ -25,17 +25,19 @@ namespace Project_SuperHero_Creator.Controllers
         // GET: Hero/Details/
         public ActionResult Details(int? id)
         {
+           
             if (id == null)
             {
                 NotFound();
             }
-            else
+           
+           var thishero = _context.Heroes.Find(id);
+            
+            if( thishero== null)
             {
-                _context.Heroes.Where(h => h.Id == id).FirstOrDefault();
-                _context.Heroes.Find(id);
-                return View(id);
+                NotFound();
             }
-            return View();
+            return View(thishero);
         }
 
         // GET: Hero/Create
@@ -66,7 +68,7 @@ namespace Project_SuperHero_Creator.Controllers
             }
             else
             {
-                _context.Heroes.Where(h => h.Id == id).FirstOrDefault();
+                
                 _context.Heroes.Find(id);
                 return RedirectToAction(nameof(Index));
             }
